@@ -66,7 +66,10 @@ fn main() {
     let num_of_64_bytes = args[1].parse::<usize>().unwrap();
     let expect = hex::decode(args[2].parse::<String>().unwrap()).unwrap();
     let setup_only = args[3].parse::<bool>().unwrap();
+    test_arkworks_sha256(num_of_64_bytes, expect, setup_only);
+}
 
+fn test_arkworks_sha256(num_of_64_bytes: usize, expect: Vec<u8>, setup_only: bool) {
     let input_size = 64 * num_of_64_bytes;
     let input_str = vec![0u8; input_size];
     let circuit = Sha256Circuit {

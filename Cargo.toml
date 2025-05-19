@@ -15,3 +15,11 @@ ark-relations = {version = "0.5.0", default-features = false}
 ark-serialize = {version = "0.5.0", default-features = false, features = ["derive"]}
 ark-std = {version = "0.5.0", default-features = false}
 hex = "0.4.3"
+
+[profile.release]
+debug = true              # Enables debug info (DWARF sections)
+split-debuginfo = "off"   # Keeps DWARF in binary (not split into .dwo files)
+opt-level = 3             # Still optimized
+lto = false               # Optional: easier for profilers to map symbols
+codegen-units = 1         # Optional: better inlining info
+
