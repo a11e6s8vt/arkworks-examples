@@ -5,6 +5,12 @@ edition = "2024"
 
 [dependencies]
 ark-bn254 = {version = "0.5.0", default-features = false, features = ["curve"]}
+ark-bls12-381 = {version = "0.5.0", default-features = false, features = ["curve"]}
+ark-bls12-377 = {version = "0.5.0", default-features = false, features = ["curve"]}
+ark-mnt4-298 = {version = "0.5.0", default-features = false, features = ["curve"]}
+ark-mnt6-298 = {version = "0.5.0", default-features = false}
+ark-cp6-782 = {version = "0.5.0", default-features = false}
+ark-bw6-761 = {version = "0.5.0", default-features = false}
 ark-crypto-primitives = {version = "0.5.0", default-features = false, features = ["snark", "crh", "r1cs"]}
 ark-ec = {version = "0.5.0", default-features = false}
 ark-ff = {version = "0.5.0", default-features = false}
@@ -13,8 +19,10 @@ ark-poly = {version = "0.5.0", default-features = false}
 ark-r1cs-std = {version = "0.5.0", default-features = false }
 ark-relations = {version = "0.5.0", default-features = false}
 ark-serialize = {version = "0.5.0", default-features = false, features = ["derive"]}
+ark-snark = "0.5.1"
 ark-std = {version = "0.5.0", default-features = false}
 hex = "0.4.3"
+usdt = "0.5.0"
 
 [profile.release]
 debug = true              # Enables debug info (DWARF sections)
@@ -23,3 +31,9 @@ opt-level = 3             # Still optimized
 lto = false               # Optional: easier for profilers to map symbols
 codegen-units = 1         # Optional: better inlining info
 
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "arkworks-examples"
+path = "src/main.rs"
