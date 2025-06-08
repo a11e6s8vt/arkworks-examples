@@ -23,16 +23,19 @@ pub fn bw6_761_test_arkworks_sha256(num_of_64_bytes: usize, expect: Vec<u8>) {
     };
 
     let mut test_rng = test_rng();
-    let (pk, vk) = circuit_setup(&circuit, &mut test_rng);
-    let proof = prove_stmt(circuit, &mut test_rng, pk);
-    verify_proof(expect, vk, proof);
+    let (pk, vk) = bw6_761_circuit_setup(&circuit, &mut test_rng);
+    let proof = bw6_761_prove_stmt(circuit, &mut test_rng, pk);
+    bw6_761_verify_proof(expect, vk, proof);
 }
 
-fn circuit_setup(circuit: &Sha256Circuit, test_rng: &mut StdRng) -> (ProveConfig, VerifyConfig) {
+fn bw6_761_circuit_setup(
+    circuit: &Sha256Circuit,
+    test_rng: &mut StdRng,
+) -> (ProveConfig, VerifyConfig) {
     GrothSetup::circuit_specific_setup(circuit.clone(), test_rng).unwrap()
 }
 
-fn prove_stmt(
+fn bw6_761_prove_stmt(
     circuit: Sha256Circuit,
     test_rng: &mut StdRng,
     pk: ProveConfig,
@@ -40,7 +43,7 @@ fn prove_stmt(
     GrothSetup::prove(&pk, circuit, test_rng).unwrap()
 }
 
-fn verify_proof(expect: Vec<u8>, vk: VerifyConfig, proof: Proof<BW6<Config>>) {
+fn bw6_761_verify_proof(expect: Vec<u8>, vk: VerifyConfig, proof: Proof<BW6<Config>>) {
     let res = GrothSetup::verify(&vk, &expect.to_field_elements().unwrap(), &proof).unwrap();
     assert!(res);
 }

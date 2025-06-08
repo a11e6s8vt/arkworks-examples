@@ -10,6 +10,9 @@ pub type Bn254ProveConfig = ark_groth16::ProvingKey<ark_ec::models::bn::Bn<ark_b
 pub type Bn254VerifyConfig = ark_groth16::VerifyingKey<ark_ec::models::bn::Bn<ark_bn254::Config>>;
 pub type GrothSetup = Groth16<Bn254>;
 
+/*
+ * Bn254 Curve
+ */
 pub fn bn254_test_arkworks_sha256(num_of_64_bytes: usize, expect: Vec<u8>) {
     let input_size = 64 * num_of_64_bytes;
     let input_str = vec![0u8; input_size];
@@ -19,20 +22,20 @@ pub fn bn254_test_arkworks_sha256(num_of_64_bytes: usize, expect: Vec<u8>) {
     };
 
     let mut test_rng = test_rng();
-    let (pk, vk) = circuit_setup(&circuit, &mut test_rng);
+    let (pk, vk) = bn254_circuit_setup(&circuit, &mut test_rng);
 
-    let proof = prove_stmt(circuit.clone(), &mut test_rng, pk);
-    verify_proof(expect, vk, proof);
+    let proof = bn254_prove_stmt(circuit.clone(), &mut test_rng, pk);
+    bn254_verify_proof(expect, vk, proof);
 }
 
-fn circuit_setup(
+fn bn254_circuit_setup(
     circuit: &Sha256Circuit,
     test_rng: &mut StdRng,
 ) -> (Bn254ProveConfig, Bn254VerifyConfig) {
     GrothSetup::circuit_specific_setup(circuit.clone(), test_rng).unwrap()
 }
 
-fn prove_stmt(
+fn bn254_prove_stmt(
     circuit: Sha256Circuit,
     test_rng: &mut StdRng,
     pk: Bn254ProveConfig,
@@ -40,7 +43,7 @@ fn prove_stmt(
     GrothSetup::prove(&pk, circuit, test_rng).unwrap()
 }
 
-fn verify_proof(expect: Vec<u8>, vk: Bn254VerifyConfig, proof: Proof<Bn<Config>>) {
+fn bn254_verify_proof(expect: Vec<u8>, vk: Bn254VerifyConfig, proof: Proof<Bn<Config>>) {
     let res = GrothSetup::verify(&vk, &expect.to_field_elements().unwrap(), &proof).unwrap();
     assert!(res);
 }
